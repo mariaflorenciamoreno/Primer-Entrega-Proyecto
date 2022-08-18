@@ -61,6 +61,8 @@ boton.onclick = () =>
             productos[0].stock = productos[0].stock - 1
             contadorProd = contadorProd + 1
             console.log("Productos seleccionados: "+ contadorProd +"\n" +"total a pagar: $"+ total)
+           
+            guardarLocal("listaProductos",JSON.stringify(productos[0]))
         }
         else
         {
@@ -77,7 +79,9 @@ boton.onclick = () =>
             total = total + productos[1].precio
             productos[1].stock = productos[1].stock - 1
             contadorProd = contadorProd + 1
-            console.log("Productos seleccionados: "+ contadorProd +"\n" +"total a pagar: $"+ total)
+            console.log("Productos seleccionados: "+
+             contadorProd +"\n" +"total a pagar: $"+ total)
+             guardarLocal("listaProductos",JSON.stringify(productos[1]))
         }
         else
         {
@@ -95,6 +99,7 @@ boton.onclick = () =>
             productos[2].stock = productos[2].stock - 1
             contadorProd = contadorProd + 1
             console.log("Productos seleccionados: "+ contadorProd +"\n" +"total a pagar: $"+ total)
+            guardarLocal("listaProductos",JSON.stringify(productos[2]))
         }
         else
         {
@@ -112,6 +117,7 @@ boton.onclick = () =>
             productos[3].stock = productos[3].stock - 1
             contadorProd = contadorProd + 1
             console.log("Productos seleccionados: "+ contadorProd +"\n" +"total a pagar: $"+ total)
+            guardarLocal("listaProductos",JSON.stringify(productos[3]))
         }
         else
         {
@@ -120,3 +126,8 @@ boton.onclick = () =>
             alert("no hay stock")
         }
     }
+const guardarLocal = (clave,valor) => { localStorage.setItem(clave,valor)};
+//almacenar
+for (const producto of productos) {
+    guardarLocal("listaProductos",JSON.stringify(productos))
+}
