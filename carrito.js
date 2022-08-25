@@ -1,61 +1,13 @@
-
+const carrito = JSON.parse(localStorage.getItem("carrito")) ?? []
+const total = carrito.reduce((acumulador, producto) => acumulador + producto.precio, 0)
 const productos = [
-    {id: 1, prod: "Ambo1", precio: 3799, stock: 3},
-    {id: 2, prod: "Ambo2", precio: 4499, stock: 5},
-    {id: 3, prod: "Ambo3", precio: 3499, stock: 9},
-    {id: 4, prod: "Ambo4", precio: 3899, stock: 8}
+    {id: 1, titulo:"Ambo Salmon" , precio: 3799, stock: 3,img:"https://d2r9epyceweg5n.cloudfront.net/stores/337/759/products/e891e6c2-cefe-4471-9dc6-ec0ee4970ba9_nube-099f9a0b2c59c6ee8716068676169850-320-0.jpg"},
+    {id: 2, titulo:"Ambo Celeste" , precio: 4499, stock: 5, img:"https://d2r9epyceweg5n.cloudfront.net/stores/337/759/products/2bd20ea9-e811-44c6-b2de-6a9c0e223d91_nube-94cf50223646dad13b16076020098807-320-0.jpg"},
+    {id: 3, titulo:"Ambo Bordo" , precio: 3499, stock: 9, img:"https://d2r9epyceweg5n.cloudfront.net/stores/337/759/products/01e937ef-f12a-4641-9abb-6e71e24f09dd_nube-21f081eb706e441f5216070174044578-320-0.jpg"},
+    {id: 4, titulo:"Ambo Flores" , precio: 3899, stock: 8, img:"https://d2r9epyceweg5n.cloudfront.net/stores/337/759/products/b1e8e88f-1b3d-4579-98fb-4fd4200fe3a7_nube-9acd49c1872c130ad916133124012181-320-0.jpg"}
 ]
-/* function carrito() { 
-    console.log("producto seleccionado " + prod)
-    console.log("precio del producto: $"+precio)
-    console.log("stock disponible "+stock)
-}
-carrito()
- */
-/* function elemento(producto, id)
-    {
-        return productos.find(objeto => objeto.id === id);
-    } */
-/* let opcion = prompt("Ingrese 1 para comenzar a comprar")
-    while (opcion != 'ESC') 
-        {
-            switch (opcion) 
-                {
-                    case "1":
-                        let user = elemento(productos, parseInt(prompt('Ingrese en ID del ambo que desea comprar')))
-                        if(user != undefined)    
-                        {
-                            if(user.stock > 0) {
-                                prod = user.prod
-                                precio = user.precio
-                                stock = user.stock - 1
-                                user.stock = stock      
-                                     
-                            }
-                            else{
-                                alert("Ya no hay stock!")
-                            }    
-                        }
-                        
-                        else
-                            {
-                                opcion = prompt('Presione 1 si desea seguir comprando');
-                            }
-                        break;
-                        default:
-                        opcion=prompt("Ingrese 1 para volver a elegir");
-                        break;      
-                    }
-                  Carrito()
-                    } */
-            
-let boton
 let contadorProd = 0
-let total = 0
-boton = document.getElementById("boton1")
-boton.onclick = () => 
-    {
-        if(productos[0].stock>0)
+       /* if(productos[0].stock>0)
         {
             total = total + productos[0].precio
             productos[0].stock = productos[0].stock - 1
@@ -125,9 +77,59 @@ boton.onclick = () =>
             sinStock.innerHTML = "Sin Stock"
             alert("no hay stock")
         }
+    } */
+
+let cards = "";
+productos.forEach((producto) => {
+    const idButton = `add-cart${producto.id}`
+        document.getElementById("seccion-card").innerHTML +=`<div  class="promo1 col-s-12 col-md-6 col-lg-6 justify-content-center">
+        <div class="d-flex justify-content-center col-s-12 col-md-6 col-lg-6 col-xl-6 text-center">
+          <div class="promo1">
+          <img class="card-img-top " style="width: 249px;heigth: 249px" src="${producto.img}" alt=""AmboCelesteYAzul"" />
+          <div class="text-center">
+          <h5 class="fw-bolder fs-20">${producto.titulo}</h5>
+          $${producto.precio}
+          </div>
+            <button class="btn btn-outline-secondary" id="${idButton}">Añadir</button>
+          </div>
+       </div>`
+}) 
+function agregarAlCarrito (){ 
+    productos.forEach((producto)=> {
+        const idButton = `add-cart${producto.id}`
+        document.getElementById(idButton).addEventListener('click', () => {
+    
+            carrito.push(producto)
+            localStorage.setItem("carrito",JSON.stringify(carrito))
+            const total = carrito.reduce((acumulador, producto) => acumulador + producto.precio, 0)
+            document.getElementById("cards-modal").innerHTML = ""
+           carrito.forEach((producto) => {
+                 document.getElementById("cards-modal").innerHTML += `
+                    <tr>
+                        <td><img src = "${producto.img}" style="width:50px"</td>
+                        <td>${producto.id}</td>
+                        <td>${producto.titulo}</td>
+                        <td>${producto.precio}</td>
+                        <td><button type="button" class="btn-close"> X </button></td>
+                    <br>
+                    </tr>
+                `
+            }) 
+            Toastify({
+                text: `Se ha añadido ${producto.titulogit}`,
+                duration: 3000,
+                destination: "",
+                newWindow: true,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background: "linear-gradient(to right, #00b09b, #96c93d)",
+                },
+                onClick: function(){} // Callback after click
+              }).showToast();
+        })
+    })
     }
-const guardarLocal = (clave,valor) => { localStorage.setItem(clave,valor)};
-//almacenar
-for (const producto of productos) {
-    guardarLocal("listaProductos",JSON.stringify(productos))
-}
+ agregarAlCarrito()
