@@ -1,11 +1,11 @@
 const carrito = JSON.parse(localStorage.getItem("carrito")) ?? []
 const total = carrito.reduce((acumulador, producto) => acumulador + producto.precio, 0)
-const productos = [
+/*const productos = [
     {id: 1, titulo:"Ambo Salmon" , precio: 3799, stock: 3,img:"https://d2r9epyceweg5n.cloudfront.net/stores/337/759/products/e891e6c2-cefe-4471-9dc6-ec0ee4970ba9_nube-099f9a0b2c59c6ee8716068676169850-320-0.jpg"},
     {id: 2, titulo:"Ambo Celeste" , precio: 4499, stock: 5, img:"https://d2r9epyceweg5n.cloudfront.net/stores/337/759/products/2bd20ea9-e811-44c6-b2de-6a9c0e223d91_nube-94cf50223646dad13b16076020098807-320-0.jpg"},
     {id: 3, titulo:"Ambo Bordo" , precio: 3499, stock: 9, img:"https://d2r9epyceweg5n.cloudfront.net/stores/337/759/products/01e937ef-f12a-4641-9abb-6e71e24f09dd_nube-21f081eb706e441f5216070174044578-320-0.jpg"},
     {id: 4, titulo:"Ambo Flores" , precio: 3899, stock: 8, img:"https://d2r9epyceweg5n.cloudfront.net/stores/337/759/products/b1e8e88f-1b3d-4579-98fb-4fd4200fe3a7_nube-9acd49c1872c130ad916133124012181-320-0.jpg"}
-]
+]*/
 let contadorProd = 0
        /* if(productos[0].stock>0)
         {
@@ -78,23 +78,29 @@ boton.onclick = () =>
             alert("no hay stock")
         }
     } */
-
-let cards = "";
-productos.forEach((producto) => {
-    const idButton = `add-cart${producto.id}`
-        document.getElementById("seccion-card").innerHTML +=`<div  class="promo1 col-s-12 col-md-6 col-lg-6 justify-content-center">
-        <div class="d-flex justify-content-center col-s-12 col-md-6 col-lg-6 col-xl-6 text-center">
-          <div class="promo1">
-          <img class="card-img-top " style="width: 249px;heigth: 249px" src="${producto.img}" alt=""AmboCelesteYAzul"" />
-          <div class="text-center">
-          <h5 class="fw-bolder fs-20">${producto.titulo}</h5>
-          $${producto.precio}
-          </div>
-            <button class="btn btn-outline-secondary" id="${idButton}">Añadir</button>
-          </div>
-       </div>`
-}) 
+    fetch('./productos.json')
+        .then( (resp) =>resp.json())
+        .then( (productos) => {
+        let cards = "";
+        productos.forEach((producto) => {
+            const idButton = `add-cart${producto.id}`
+                document.getElementById("seccion-card").innerHTML +=`<div  class="promo1 col-s-12 col-md-6 col-lg-6 justify-content-center">
+                <div class="d-flex justify-content-center col-s-12 col-md-6 col-lg-6 col-xl-6 text-center">
+                  <div class="promo1">
+                  <img class="card-img-top " style="width: 249px;heigth: 249px" src="${producto.img}" alt=""AmboCelesteYAzul"" />
+                  <div class="text-center">
+                  <h5 class="fw-bolder fs-20">${producto.titulo}</h5>
+                  $${producto.precio}
+                  </div>
+                    <button class="btn btn-outline-secondary" id="${idButton}">Añadir</button>
+                  </div>
+               </div>`
+            }) 
+    })
 function agregarAlCarrito (){ 
+    fetch('./productos.json')
+    .then( (resp) =>resp.json())
+    .then( (productos) => {
     productos.forEach((producto)=> {
         const idButton = `add-cart${producto.id}`
         document.getElementById(idButton).addEventListener('click', () => {
@@ -114,22 +120,22 @@ function agregarAlCarrito (){
                     <br>
                     </tr>
                 `
-            }) 
+            })
             Toastify({
-                text: `Se ha añadido ${producto.titulogit}`,
+                text: `Se ha añadido ${producto.titulo}`,
                 duration: 3000,
                 destination: "",
                 newWindow: true,
                 close: true,
-                gravity: "top", // `top` or `bottom`
-                position: "right", // `left`, `center` or `right`
-                stopOnFocus: true, // Prevents dismissing of toast on hover
+                gravity: "top", 
+                position: "right", 
+                stopOnFocus: true, 
                 style: {
                   background: "linear-gradient(to right, #00b09b, #96c93d)",
                 },
-                onClick: function(){} // Callback after click
+                onClick: function(){} 
               }).showToast();
         })
     })
-    }
+    })}
  agregarAlCarrito()
